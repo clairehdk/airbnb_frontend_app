@@ -38,11 +38,16 @@ export default function SignInScreen({ setToken }) {
         console.log(response);
         const userToken = "secret-token";
         setToken(userToken);
+        alert("Connexion réussie");
       } else {
         setError("Veuillez remplir les champs manquants.");
       }
     } catch (e) {
-      console.log(e.message);
+      if (e.response.status === 401) {
+        setError("Email / Mot de passe incorrect");
+      } else {
+        console.log(e.response.status);
+      }
     }
   };
   const navigation = useNavigation();
@@ -52,20 +57,19 @@ export default function SignInScreen({ setToken }) {
       <View style={styles.container}>
         <Header title="Sign In" />
         <View>
-          <Text>{error && error}</Text>
+          <Text style={styles.error}>{error && error}</Text>
           <View style={styles.form}>
             <TextInput
-              style={[styles.input]}
+              style={styles.input}
               placeholder="email"
               onChangeText={handleEmail}
             />
             <TextInput
-              style={[styles.input]}
+              style={styles.input}
               placeholder="password"
               secureTextEntry={true}
               onChangeText={handlePass}
             />
-            {console.log(pass)}
           </View>
           <View style={styles.center}>
             <TouchableOpacity
@@ -78,7 +82,7 @@ export default function SignInScreen({ setToken }) {
               <Text style={styles.button}>Sign in</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              style={[styles.butt]}
+              style={styles.butt}
               onPress={() => {
                 navigation.navigate("SignUp");
               }}
@@ -127,5 +131,9 @@ const styles = StyleSheet.create({
     borderWidth: 3,
     borderRadius: 33,
     fontSize: 18,
+  },
+  error: {
+    color: "#EB5A62",
+    textAlign: "center",
   },
 });
