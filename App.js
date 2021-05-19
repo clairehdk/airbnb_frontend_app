@@ -9,6 +9,8 @@ import ProfileScreen from "./containers/ProfileScreen";
 import SignInScreen from "./containers/SignInScreen";
 import SignUpScreen from "./containers/SignUpScreen";
 import SettingsScreen from "./containers/SettingsScreen";
+import HeaderIcon from "./components/HeaderIcon";
+import { SafeAreaView } from "react-native";
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -46,7 +48,10 @@ export default function App() {
     <NavigationContainer>
       {isLoading ? null : userToken === null ? ( // We haven't finished checking for the token yet
         // No token found, user isn't signed in
-        <Stack.Navigator>
+        <Stack.Navigator
+          initialRouteName="SignIn"
+          screenOptions={{ headerShown: false }}
+        >
           <Stack.Screen name="SignIn">
             {() => <SignInScreen setToken={setToken} />}
           </Stack.Screen>
@@ -75,23 +80,19 @@ export default function App() {
                   }}
                 >
                   {() => (
-                    <Stack.Navigator>
-                      <Stack.Screen
-                        name="Home"
-                        options={{
-                          title: "My App",
-                          headerStyle: { backgroundColor: "red" },
-                          headerTitleStyle: { color: "white" },
-                        }}
-                      >
+                    <Stack.Navigator
+                      screenOptions={{
+                        headerTitle: <HeaderIcon />,
+                        // headerStyle: { backgroundColor: "white" },
+                      }}
+                    >
+                      <Stack.Screen name="Home" options={{}}>
                         {() => <HomeScreen />}
                       </Stack.Screen>
 
                       <Stack.Screen
                         name="Profile"
-                        options={{
-                          title: "User Profile",
-                        }}
+                        options={{ headerLeft: false }}
                       >
                         {() => <ProfileScreen />}
                       </Stack.Screen>

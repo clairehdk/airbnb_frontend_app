@@ -9,9 +9,13 @@ import {
   TouchableOpacity,
   ScrollView,
   StyleSheet,
+  SafeAreaView,
 } from "react-native";
 import Header from "../components/Header";
 import axios from "axios";
+import Input from "../components/Input";
+import LargeInput from "../components/LargeInput";
+import ErrorMessage from "../components/ErrorMessage";
 
 export default function SignUpScreen({ setToken }) {
   const [email, setEmail] = useState("");
@@ -50,77 +54,64 @@ export default function SignUpScreen({ setToken }) {
             "https://express-airbnb-api.herokuapp.com/user/sign_up",
             data
           );
-          console.log(response);
-          const userToken = "secret-token";
+          console.log(response.data);
+          const userToken = response.data.token;
           setToken(userToken);
-          alert("Inscription réussie");
+          alert("Sign up completed !");
         } else {
-          setError("Mot de passe non-identiques.");
+          setError("Non-identical password.");
         }
       } else {
-        setError("Veuillez remplir les champs manquants.");
+        setError("Missing parameters.");
       }
     } catch (e) {
-      if (e.response.status === 401) {
-        setError("Email / Mot de passe incorrect");
-      } else {
-        console.log(e.response.status);
-      }
+      setError(e.response.data.error);
     }
   };
   const navigation = useNavigation();
   return (
-    <KeyboardAwareScrollView>
-      <View style={styles.container}>
-        <Header title="Sign In" />
-        <View>
-          <Text style={styles.error}>{error && error}</Text>
-          <TextInput
-            style={styles.input}
-            placeholder="email"
-            onChange={handleEmail}
-          />
-          <TextInput
-            style={styles.input}
-            placeholder="username"
-            onChange={handleUsername}
-          />
-          <TextInput
-            style={styles.textarea}
-            placeholder="Describe yourself in a few words"
-            onChange={handleDescription}
-          />
-          <TextInput
-            style={styles.input}
-            placeholder="password"
-            secureTextEntry={true}
-            onChange={handlePass}
-          />
-          <TextInput
-            style={styles.input}
-            placeholder="confirm password"
-            secureTextEntry={true}
-            onChange={handleConfirmPass}
-          />
-          <TouchableOpacity
-            style={styles.butt}
-            onPress={async () => {
-              handleSubmit();
-            }}
-          >
-            <Text style={styles.button}>Sign up</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.butt}
-            onPress={() => {
-              navigation.navigate("SignIn");
-            }}
-          >
-            <Text>Already have a account ? Sign in</Text>
-          </TouchableOpacity>
+    <SafeAreaView>
+      <KeyboardAwareScrollView>
+        <View style={styles.container}>
+          <Header title="Sign Up" />
+          <ErrorMessage error={error} />
+          <View>
+            <Input placeholder="email" setValue={handleEmail} />
+            <Input placeholder="username" setValue={handleUsername} />
+            <LargeInput
+              placeholder="Describe yourself in a few words"
+              setValue={handleDescription}
+            />
+            <Input
+              placeholder="password"
+              setValue={handlePass}
+              secureTextEntry={true}
+            />
+            <Input
+              placeholder="confirm password"
+              setValue={handleConfirmPass}
+              secureTextEntry={true}
+            />
+            <TouchableOpacity
+              style={styles.butt}
+              onPress={async () => {
+                handleSubmit();
+              }}
+            >
+              <Text style={[styles.button]}>Sign up</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.butt}
+              onPress={() => {
+                navigation.navigate("SignIn");
+              }}
+            >
+              <Text>Already have a account ? Sign in</Text>
+            </TouchableOpacity>
+          </View>
         </View>
-      </View>
-    </KeyboardAwareScrollView>
+      </KeyboardAwareScrollView>
+    </SafeAreaView>
   );
 }
 
@@ -129,27 +120,11 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     flex: 1,
-    marginLeft: 30,
-    marginRight: 30,
-  },
-  form: {
-    marginTop: 50,
-    height: 200,
-  },
-  input: {
-    width: 300,
-    fontSize: 15,
-    marginBottom: 20,
-    padding: 10,
-    borderBottomColor: "#EB5A62",
-    borderBottomWidth: 1,
-  },
-  textarea: {
-    height: 100,
-    borderColor: "#EB5A62",
-    borderWidth: 1,
+    // marginLeft: 30,
+    // marginRight: 30,
   },
   butt: {
+    marginTop: 0,
     alignItems: "center",
     justifyContent: "center",
     marginBottom: 20,
@@ -164,9 +139,6 @@ const styles = StyleSheet.create({
     borderWidth: 3,
     borderRadius: 33,
     fontSize: 18,
-  },
-  error: {
-    color: "#EB5A62",
-    textAlign: "center",
+    marginTop: 40,
   },
 });

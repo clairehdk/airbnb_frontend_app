@@ -1,13 +1,19 @@
 import React from "react";
 import { useNavigation } from "@react-navigation/core";
-import { Image, Text, View, StyleSheet } from "react-native";
+import { Image, Text, View, StyleSheet, SafeAreaView } from "react-native";
 
 const Header = ({ title }) => {
   return (
-    <View style={[styles.header]}>
-      <Image style={[styles.logo]} source={require("../assets/logo.png")} />
-      <Text style={styles.title}>{title}</Text>
-    </View>
+    <SafeAreaView>
+      <View style={[styles.header]}>
+        <Image
+          style={[styles.logo]}
+          source={require("../assets/logo.png")}
+          resizeMode="contain"
+        />
+        <Text style={styles.title}>{title}</Text>
+      </View>
+    </SafeAreaView>
   );
 };
 
@@ -16,9 +22,10 @@ export default Header;
 const styles = StyleSheet.create({
   header: {
     // flex: 1,
+    marginTop: 30,
     justifyContent: "center",
     alignItems: "center",
-    height: 250,
+    height: 200,
   },
   logo: {
     width: 100,
