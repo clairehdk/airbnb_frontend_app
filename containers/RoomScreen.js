@@ -18,7 +18,6 @@ const RoomScreen = () => {
       const response = await axios.get(
         `https://express-airbnb-api.herokuapp.com/rooms/${params.roomId}`
       );
-      console.log(response.data);
       setData(response.data);
       setIsLoading(false);
     };
