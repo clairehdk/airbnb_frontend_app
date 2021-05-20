@@ -3,7 +3,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { Ionicons, AntDesign } from "@expo/vector-icons";
+import { Ionicons, AntDesign, EvilIcons } from "@expo/vector-icons";
 import HomeScreen from "./containers/HomeScreen";
 import ProfileScreen from "./containers/ProfileScreen";
 import SignInScreen from "./containers/SignInScreen";
@@ -12,6 +12,7 @@ import SettingsScreen from "./containers/SettingsScreen";
 import RoomScreen from "./containers/RoomScreen";
 import HeaderIcon from "./components/HeaderIcon";
 import { SafeAreaView, StyleSheet } from "react-native";
+import AroundMeScreen from "./containers/AroundMeScreen";
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -109,6 +110,27 @@ export default function App() {
                         }}
                       >
                         {() => <RoomScreen />}
+                      </Stack.Screen>
+                    </Stack.Navigator>
+                  )}
+                </Tab.Screen>
+                <Tab.Screen
+                  name="Around Me"
+                  options={{
+                    // tabBarLabel: "Home",
+                    tabBarIcon: ({ color, size }) => (
+                      <EvilIcons name="location" size={24} color="black" />
+                    ),
+                  }}
+                >
+                  {() => (
+                    <Stack.Navigator
+                      screenOptions={{
+                        headerTitle: <HeaderIcon />,
+                      }}
+                    >
+                      <Stack.Screen name="Home" options={{}}>
+                        {() => <AroundMeScreen />}
                       </Stack.Screen>
                     </Stack.Navigator>
                   )}

@@ -4,11 +4,14 @@ import { View, Text, Image, StyleSheet, ActivityIndicator } from "react-native";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { FontAwesome } from "@expo/vector-icons";
+import * as Location from "expo-location";
 
 const RoomScreen = () => {
   const [data, setData] = useState();
   const [loading, setIsLoading] = useState(true);
   const [displayAllText, setDisplayAllText] = useState(false);
+  const [coords, setCoords] = useState();
+  const [error, setError] = useState("");
   const { params } = useRoute();
   useEffect(() => {
     const fetchData = async () => {
@@ -131,5 +134,10 @@ const styles = StyleSheet.create({
   description: {
     lineHeight: 20,
     fontSize: 15,
+  },
+  imgProfile: {
+    // flex: 1,
+    width: 100,
+    height: 200,
   },
 });
