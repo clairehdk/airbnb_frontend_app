@@ -3,14 +3,15 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { Ionicons } from "@expo/vector-icons";
+import { Ionicons, AntDesign } from "@expo/vector-icons";
 import HomeScreen from "./containers/HomeScreen";
 import ProfileScreen from "./containers/ProfileScreen";
 import SignInScreen from "./containers/SignInScreen";
 import SignUpScreen from "./containers/SignUpScreen";
 import SettingsScreen from "./containers/SettingsScreen";
+import RoomScreen from "./containers/RoomScreen";
 import HeaderIcon from "./components/HeaderIcon";
-import { SafeAreaView } from "react-native";
+import { SafeAreaView, StyleSheet } from "react-native";
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -53,10 +54,10 @@ export default function App() {
           screenOptions={{ headerShown: false }}
         >
           <Stack.Screen name="SignIn">
-            {() => <SignInScreen setToken={setToken} />}
+            {(props) => <SignInScreen {...props} setToken={setToken} />}
           </Stack.Screen>
           <Stack.Screen name="SignUp">
-            {() => <SignUpScreen setToken={setToken} />}
+            {(props) => <SignUpScreen {...props} setToken={setToken} />}
           </Stack.Screen>
         </Stack.Navigator>
       ) : (
@@ -66,14 +67,14 @@ export default function App() {
             {() => (
               <Tab.Navigator
                 tabBarOptions={{
-                  activeTintColor: "tomato",
+                  activeTintColor: "#EB5A62",
                   inactiveTintColor: "gray",
                 }}
               >
                 <Tab.Screen
                   name="Home"
                   options={{
-                    tabBarLabel: "Home",
+                    // tabBarLabel: "Home",
                     tabBarIcon: ({ color, size }) => (
                       <Ionicons name={"ios-home"} size={size} color={color} />
                     ),
@@ -83,7 +84,6 @@ export default function App() {
                     <Stack.Navigator
                       screenOptions={{
                         headerTitle: <HeaderIcon />,
-                        // headerStyle: { backgroundColor: "white" },
                       }}
                     >
                       <Stack.Screen name="Home" options={{}}>
@@ -96,16 +96,30 @@ export default function App() {
                       >
                         {() => <ProfileScreen />}
                       </Stack.Screen>
+                      <Stack.Screen
+                        name="RoomScreen"
+                        options={{
+                          headerLeft: () => (
+                            <AntDesign
+                              name="arrowleft"
+                              size={24}
+                              color="black"
+                            />
+                          ),
+                        }}
+                      >
+                        {() => <RoomScreen />}
+                      </Stack.Screen>
                     </Stack.Navigator>
                   )}
                 </Tab.Screen>
                 <Tab.Screen
-                  name="Settings"
+                  name="My profile"
                   options={{
-                    tabBarLabel: "Settings",
+                    tabBarLabel: "My profile",
                     tabBarIcon: ({ color, size }) => (
                       <Ionicons
-                        name={"ios-options"}
+                        name={"person-outline"}
                         size={size}
                         color={color}
                       />
