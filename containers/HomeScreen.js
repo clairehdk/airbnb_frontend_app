@@ -22,7 +22,7 @@ export default function HomeScreen({}) {
       const response = await axios.get(
         "https://express-airbnb-api.herokuapp.com/rooms"
       );
-      console.log(response.data);
+      // console.log(response.data);
       setData(response.data);
       setIsLoading(false);
     };

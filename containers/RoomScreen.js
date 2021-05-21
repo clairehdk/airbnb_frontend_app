@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { FontAwesome } from "@expo/vector-icons";
 import * as Location from "expo-location";
+import MapView from "react-native-maps";
 
 const RoomScreen = () => {
   const [data, setData] = useState();
@@ -58,22 +59,40 @@ const RoomScreen = () => {
           </View>
           <View>
             <Image
-              styles={styles.imgProfile}
+              style={styles.imgProfile}
               source={{ uri: data.user.account.photo.url }}
               resizeMode="contain"
             />
           </View>
-          {/* {console.log(data.user.account.photo.url)} */}
         </View>
-        <Text
-          onPress={() => {
-            setDisplayAllText(!displayAllText);
+        <View>
+          <Text
+            onPress={() => {
+              setDisplayAllText(!displayAllText);
+            }}
+            numberOfLines={!displayAllText ? 3 : null}
+            style={styles.description}
+          >
+            {data.description}
+          </Text>
+        </View>
+        <MapView
+          style={{ width: "100%", height: 250, marginTop: 20 }}
+          initialRegion={{
+            latitude: 48.856614,
+            longitude: 2.3522219,
+            latitudeDelta: 0.1,
+            longitudeDelta: 0.1,
           }}
-          numberOfLines={!displayAllText ? 3 : null}
-          style={styles.description}
+          //   showsUserLocation={true}
         >
-          {data.description}
-        </Text>
+          <MapView.Marker
+            coordinate={{
+              latitude: data.location[1],
+              longitude: data.location[0],
+            }}
+          />
+        </MapView>
       </View>
     </View>
   );
@@ -115,8 +134,16 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   infos: {
+    marginTop: 20,
+    paddingBottom: 20,
+    marginBottom: 20,
     width: "100%",
+    // borderWidth: 2,
+    // borderColor: "red",
     flexDirection: "row",
+    borderBottomColor: "#BBBBBB",
+    borderBottomWidth: 1,
+    justifyContent: "space-between",
   },
   infos_title: {
     width: "70%",
@@ -136,7 +163,8 @@ const styles = StyleSheet.create({
   },
   imgProfile: {
     // flex: 1,
-    width: 100,
-    height: 200,
+    width: 80,
+    height: 80,
+    borderRadius: 40,
   },
 });

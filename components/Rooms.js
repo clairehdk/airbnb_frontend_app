@@ -58,7 +58,7 @@ const Rooms = ({ data }) => {
                 </View>
                 <View>
                   <Image
-                    styles={styles.imgProfile}
+                    style={styles.imgProfile}
                     source={{ uri: item.user.account.photo.url }}
                     resizeMode="contain"
                   />
@@ -93,8 +93,9 @@ const styles = StyleSheet.create({
   },
   imgProfile: {
     // flex: 1,
-    width: 100,
-    height: 200,
+    width: 80,
+    height: 80,
+    borderRadius: 40,
   },
   price: {
     // position: "absolute",
@@ -115,12 +116,15 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   infos: {
+    marginTop: 20,
+    paddingBottom: 20,
     width: "100%",
     // borderWidth: 2,
     // borderColor: "red",
     flexDirection: "row",
     borderBottomColor: "#BBBBBB",
     borderBottomWidth: 1,
+    justifyContent: "space-between",
   },
   infos_title: {
     width: "70%",

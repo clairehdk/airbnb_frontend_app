@@ -17,7 +17,7 @@ import Input from "../components/Input";
 import LargeInput from "../components/LargeInput";
 import ErrorMessage from "../components/ErrorMessage";
 
-export default function SignUpScreen({ setToken }) {
+export default function SignUpScreen({ setToken, setId }) {
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [pass, setPass] = useState("");
@@ -54,10 +54,10 @@ export default function SignUpScreen({ setToken }) {
             "https://express-airbnb-api.herokuapp.com/user/sign_up",
             data
           );
-          console.log(response.data);
+          // console.log(response.data);
           const userToken = response.data.token;
           setToken(userToken);
-          alert("Sign up completed !");
+          setId(response.data.id);
         } else {
           setError("Non-identical password.");
         }

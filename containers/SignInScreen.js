@@ -15,10 +15,11 @@ import axios from "axios";
 import Input from "../components/Input";
 import ErrorMessage from "../components/ErrorMessage";
 
-export default function SignInScreen({ setToken }) {
+export default function SignInScreen({ setToken, setId }) {
   const [email, setEmail] = useState("");
   const [pass, setPass] = useState("");
   const [error, setError] = useState("");
+  const [userId, setUserId] = useState("");
 
   const handlePass = (text) => {
     setPass(text);
@@ -40,7 +41,7 @@ export default function SignInScreen({ setToken }) {
         // console.log(response);
         const userToken = response.data.token;
         setToken(userToken);
-        alert("Sign in completed !");
+        setId(response.data.id);
       } else {
         setError("Missign parameters.");
       }

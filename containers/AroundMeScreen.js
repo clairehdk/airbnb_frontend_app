@@ -2,19 +2,23 @@ import React, { useEffect, useState } from "react";
 import { Text, View, StyleSheet } from "react-native";
 import * as Location from "expo-location";
 import MapView from "react-native-maps";
+import { useNavigation } from "@react-navigation/core";
 
 import axios from "axios";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 const AroundMeScreen = () => {
+  const navigation = useNavigation();
   const [error, setError] = useState();
   const [isLoading, setIsLoading] = useState(true);
   const [coords, setCoords] = useState();
+  const [data, setData] = useState([]);
   useEffect(() => {
     const askPermission = async () => {
-      let { status } = await Location.requestForegroundPermissionsAsync();
+      const { status } = await Location.requestForegroundPermissionsAsync();
 
       if (status === "granted") {
-        let location = await Location.getCurrentPositionAsync({});
+        const location = await Location.getCurrentPositionAsync({});
 
         const obj = {
           latitude: location.coords.latitude,
@@ -26,8 +30,15 @@ const AroundMeScreen = () => {
       }
       setIsLoading(false);
     };
-
+    const fetchData = async () => {
+      const response = await axios.get(
+        `https://express-airbnb-api.herokuapp.com/rooms/around`
+      );
+      //   console.log(response.data);
+      setData(response.data);
+    };
     askPermission();
+    fetchData();
   }, []);
 
   return (
@@ -39,19 +50,36 @@ const AroundMeScreen = () => {
       ) : (
         <>
           <MapView
-            style={{ flex: 1 }}
+            style={{ width: "100%", height: "100%" }}
             initialRegion={{
               latitude: coords.latitude,
               longitude: coords.longitude,
-              latitudeDelta: 0.2,
-              longitudeDelta: 0.2,
+              latitudeDelta: 0.5,
+              longitudeDelta: 0.5,
             }}
             showsUserLocation={true}
-          ></MapView>
-          <Text>Latitude de l'utilisateur : {coords.latitude}</Text>
-          <Text>Longitude de l'utilisateur : {coords.longitude}</Text>
+          >
+            {data.map((item) => {
+              return (
+                <TouchableOpacity
+                  onPress={() => {
+                    navigation.navigate("RoomScreen", { roomId: item._id });
+                  }}
+                >
+                  <MapView.Marker
+                    key={item._id}
+                    coordinate={{
+                      latitude: item.location[1],
+                      longitude: item.location[0],
+                    }}
+                  />
+                </TouchableOpacity>
+              );
+            })}
+          </MapView>
         </>
       )}
+      {/* {console.log(data)} */}
     </View>
   );
 };
